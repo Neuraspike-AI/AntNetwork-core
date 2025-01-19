@@ -116,7 +116,7 @@ func TestVerifySignature() {
 	fmt.Println(verifySignature(publicKey, "hello world", signature))
 }
 
-func EncodeBase58(input string) []byte {
+func EncodeBase58(input string) string {
 	return base58.Encode([]byte(input))
 }
 
@@ -136,12 +136,7 @@ func CreateNewWallet() Wallet {
 	primaryPublicKeyHash := Sha256Hash(publicKey.X.Text(16))
 	secondaryPublicKeyHash := Sha256Hash(primaryPublicKeyHash)
 
-	address, err := HexToBase58(secondaryPublicKeyHash)
-
-	if err != nil {
-		fmt.Println(err)
-		panic("AHHH")
-	}
+	address := EncodeBase58(secondaryPublicKeyHash)
 
 	return Wallet{privateKey, publicKey, address}
 }
